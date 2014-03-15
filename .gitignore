@@ -1,0 +1,8 @@
+*~
+#*
+/node_modules
+.nrepl-port
+.tern-port
+/build
+npm-debug.log
+/repl-server/clojure/target

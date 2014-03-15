@@ -1,0 +1,23 @@
+.cm-s-moondoge span.cm-meta {color: #FF1717;}
+.cm-s-moondoge span.cm-keyword { line-height: 1em; font-weight: bold; color: #7F0055; }
+.cm-s-moondoge span.cm-atom {color: #219;}
+.cm-s-moondoge span.cm-number {color: #164;}
+.cm-s-moondoge span.cm-def {color: #00f;}
+.cm-s-moondoge span.cm-variable {color: black;}
+.cm-s-moondoge span.cm-variable-2 {color: #0000C0;}
+.cm-s-moondoge span.cm-variable-3 {color: #0000C0;}
+.cm-s-moondoge span.cm-property {color: black;}
+.cm-s-moondoge span.cm-operator {color: black;}
+.cm-s-moondoge span.cm-comment {color: #b00; font-weight: bold; font-style: italic;}
+.cm-s-moondoge span.cm-string {color: #2A00FF;}
+.cm-s-moondoge span.cm-string-2 {color: #f50;}
+.cm-s-moondoge span.cm-qualifier {color: #555;}
+.cm-s-moondoge span.cm-builtin {color: #30a;}
+.cm-s-moondoge span.cm-bracket {color: black;}
+.cm-s-moondoge span.cm-tag {color: #170;}
+.cm-s-moondoge span.cm-attribute {color: #00c;}
+.cm-s-moondoge span.cm-link {color: #219;}
+.cm-s-moondoge span.cm-error {color: #f00;}
+
+.cm-s-moondoge .CodeMirror-activeline-background {background: #e8f2ff !important;}
+.cm-s-moondoge .CodeMirror-matchingbracket {background-color: #ccc; color:black !important;}

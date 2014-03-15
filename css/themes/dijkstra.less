@@ -1,0 +1,227 @@
+@import "../fonts/Dijkstra/dijkstra.css";
+@import "../fonts/Celestia/celestia.css";
+@import "../fonts/Inconsolata/inconsolata.css";
+
+@backgroundColour: #f0f0f0;
+
+@azfg: #232333;
+@azfg1: #9a9aaa;
+@azbg1: #d4d4d4;
+@azbg05: #c7c7c7;
+@azbg: #c0c0c0;
+@azbgp1: #b0b0b0;
+@azbgp2: #a0a0a0;
+@azbgp3: #909090;
+@azbluep1: #235c5c;
+@azblue: #336c6c;
+@azblue1: #437c7c;
+@azblue2: #538c8c;
+@azblue3: #639c9c;
+@azblue4: #73acac;
+@azlightblue: #205070;
+@azdarkblue: #0f2050;
+@azdarkblue1: #1f3060;
+@azdarkblue2: #2f4070;
+@azviolet1: #a080a0;
+@azviolet: #806080;
+@azvioletp1: #704d70;
+@azvioletp2: #603a60;
+@azvioletp3: #502750;
+@azvioletp4: #401440;
+@azbordeaux: #6c1f1c;
+@azbeigep1: #6b400c;
+@azbeige: #732f2c;
+@azbeige1: #834744;
+@azbeige2: #935f5c;
+@azbeige3: #a37774;
+@azbeige4: #b38f8c;
+@azbeige5: #c99f9f;
+@azgreen: #23733c;
+
+@text: @azfg;
+@headerText: @azvioletp2;
+@linkText: @azdarkblue;
+@bullet: desaturate(lighten(@text, 40%), 15%);
+
+@codeBackground: fadeOut(@backgroundColour, 50%);
+@code: @azfg;
+
+@codeString: @azblue;
+@codeKeyword: @azdarkblue;
+@codeComment: @azviolet;
+@codeType: @azbeige1;
+@codeLiteral: @azviolet;
+@codePunctuation: @azblue;
+@codeDecimal: @azvioletp4;
+@codeOpenParen: @azfg;
+@codeCloseParen: @azfg;
+@codeHtmlTag: @azbordeaux;
+@codeHtmlAttribute: @azlightblue;
+@codeHtmlValue: @azblue;
+
+@standardFont: 'Dijkstra';
+@codeFont: 'Inconsolata';
+@headerFont: 'Celestia';
+
+body {
+    font-family: @standardFont;
+    font-size: 36pt;
+    font-weight: 200;
+    letter-spacing: -0.02em;
+    color: @text;
+    background: @backgroundColour;
+}
+
+#slides {
+
+    section {
+        text-align: center;
+        background: fadeout(@backgroundColour, 15%);
+    }
+
+    pre {
+        text-align: left;
+        letter-spacing: 0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        background: none;
+        margin: 0 0 20px 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        vertical-align: baseline;
+        color: @headerText;
+        line-height: 1.05em;
+        letter-spacing: 0.02em;
+        font-family: @headerFont;
+        text-transform: uppercase;
+        text-shadow: 0px 0px 6px rgba(0,0,0,0.2);
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        hyphens: auto;
+
+        word-wrap: break-word;
+        line-height: 1;
+    }
+
+    h1 {
+        font-size: 3.77em;
+        text-shadow: 0 1px 0 darken(@headerText, 5%),
+        0 2px 0 darken(@headerText, 6%),
+        0 3px 0 darken(@headerText, 7%),
+        0 4px 0 darken(@headerText, 8%),
+        0 5px 0 darken(@headerText, 9%),
+        0 6px 1px rgba(0,0,0,.1),
+        0 0 5px rgba(0,0,0,.1),
+        0 1px 3px rgba(0,0,0,.3),
+        0 3px 5px rgba(0,0,0,.2),
+        0 5px 10px rgba(0,0,0,.25),
+        0 20px 20px rgba(0,0,0,.15);
+    }
+
+    h2 {
+        font-size: 2.11em;
+        text-shadow: 0 1px 0 darken(@headerText, 5%),
+        0 2px 0 darken(@headerText, 6%),
+        0 3px 0 darken(@headerText, 7%),
+        0 4px 0 darken(@headerText, 8%),
+        0 6px 1px rgba(0,0,0,.1),
+        0 0 5px rgba(0,0,0,.1),
+        0 1px 3px rgba(0,0,0,.3),
+        0 3px 5px rgba(0,0,0,.2),
+        0 4px 8px rgba(0,0,0,.25),
+        0 10px 10px rgba(0,0,0,.15);
+    }
+
+    h3 {
+        font-size: 1.55em;
+        text-shadow: 0 1px 0 darken(@headerText, 5%),
+        0 2px 0 darken(@headerText, 6%),
+        0 6px 1px rgba(0,0,0,.1),
+        0 0 5px rgba(0,0,0,.1),
+        0 1px 3px rgba(0,0,0,.3),
+        0 3px 5px rgba(0,0,0,.2),
+        0 5px 10px rgba(0,0,0,.25);
+    }
+
+    h4, h5, h6 {
+        font-size: 1em;
+        text-shadow: 0 1px 0 darken(@headerText, 5%),
+        0 6px 1px rgba(0,0,0,.1),
+        0 0 5px rgba(0,0,0,.1),
+        0 1px 3px rgba(0,0,0,.3),
+        0 3px 5px rgba(0,0,0,.2);
+    }
+
+    // Typography
+
+    p, li, blockquote {
+        text-shadow: 1px 1px 4px fade(@text, 40%);
+        line-height: 48pt;
+    }
+
+    strong {
+        letter-spacing: 0.05em;
+    }
+
+    blockquote {
+        background: @azbg1;
+    }
+
+    // Links
+
+    a:not(.image) {
+        color: @linkText;
+        text-decoration: underline;
+        text-shadow: 1px 1px 4px fade(@linkText, 50%);
+
+        -webkit-transition: all .15s ease;
+        -moz-transition: all .15s ease;
+        -ms-transition: all .15s ease;
+        -o-transition: all .15s ease;
+        transition: all .15s ease;
+
+        &:hover {
+            color: lighten(@linkText, 20%);
+            text-shadow: 1px 1px 4px fade(lighten(@linkText, 20%), 75%);
+        }
+    }
+
+    // Lists
+
+    ol {
+        counter-reset: li;
+
+        li:before {
+            content: counters(li, " ", arabic-indic);
+            counter-increment: li;
+        }
+    }
+
+    ul {
+        li:before {
+            content: '✤';
+        }
+    }
+
+    ul, ol {
+        margin: 0.3em 0;
+
+        li {
+            list-style: none;
+            position: relative;
+
+            &:before {
+                color: @bullet;
+                text-align: right;
+                position: absolute;
+                left: 0;
+                width: 2em;
+                margin-left: -2.3em;
+                text-shadow: 0 2px 2px fade(@bullet, 60%);
+            }
+        }
+    }
+
+}
