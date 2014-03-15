@@ -23,7 +23,6 @@ function Deck(container, deckModules) {
   const stream = seq.flatMap((slide) => {
     return [slide].concat(seq.toArray(slide.querySelectorAll(".fragment")));
   }, slides);
-  console.log(stream);
 
   function isFragment(node) {
     return node.classList.contains("fragment");

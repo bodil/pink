@@ -11,15 +11,12 @@ module.exports = (languages) => {
     var counter = 0;
 
     socket.onopen = (event) => {
-      console.log("socket open:", event);
     }
 
     socket.onerror = (event) => {
-      console.error("socket error:", event);
     }
 
     socket.onmessage = (event) => {
-      console.log("socket message:", event);
       let msg = JSON.parse(event.data);
       let id = msg.messageId;
       let callback = queue[id];
@@ -33,7 +30,6 @@ module.exports = (languages) => {
       obj.messageId = "" + (++counter);
       queue[obj.messageId] = callback;
       let data = JSON.stringify(obj);
-      console.log("socket send:", data);
       socket.send(data);
     }
 
