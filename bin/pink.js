@@ -128,6 +128,7 @@ function runServer() {
     plugins: []
   }));
   var server = new WebpackDevServer(compiler, {
+    publicPath: "/dist/pink/",
     stats: {
       hash: false,
       assets: false,
