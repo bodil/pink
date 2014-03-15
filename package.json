@@ -6,7 +6,7 @@
   "author": "Bodil Stokke",
   "keywords": ["presentation", "slides", "livecoding"],
   "licenses": [
-    "GPL-3"
+    "GPL-3.0"
   ],
   "repository": {
     "type": "git",
