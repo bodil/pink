@@ -90,6 +90,9 @@ var webpackConfig = {
       "pink": path.join(__dirname, "..")
     }
   },
+  resolveLoader: {
+    fallback: [path.join(__dirname, "..", "node_modules")]
+  },
   node: {
     "global": true,
     "process": true,
