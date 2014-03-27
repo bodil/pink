@@ -6,8 +6,9 @@ require("traceur/bin/traceur-runtime");
 
 require("./css/screen.less");
 
-var events = require("./lib/events");
 var mousetrap = require("./lib/mousetrap");
+var hammer = require("hammerjs");
+var events = require("./lib/events");
 var seq = require("./lib/seq");
 
 function Deck(container, deckModules) {
@@ -175,6 +176,10 @@ function Deck(container, deckModules) {
 
   this.bind(["pageup", "left"], this.previousItem);
   this.bind(["pagedown", "space", "right"], this.nextItem);
+
+  hammer(container).on("dragright", this.previousItem.bind(this));
+  hammer(container).on("dragleft", this.nextItem.bind(this));
+  hammer(container).on("tap", this.nextItem.bind(this));
 
   setTimeout(() => {
     this.rescale();

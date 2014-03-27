@@ -35,6 +35,7 @@
     "ansi": "~0.2.1",
     "directory-copy": "~0.1.0",
     "mkdirp": "~0.3.5",
-    "script-loader": "~0.5.2"
+    "script-loader": "~0.5.2",
+    "hammerjs": "~1.0.9"
   }
 }
