@@ -151,6 +151,20 @@ function Deck(container, deckModules) {
     }
   }
 
+  this.rescale = () => {
+    const screenw = window.innerWidth,
+          screenh = window.innerHeight;
+
+    const targetw = 1280,
+          targeth = 720;
+
+    const targetScale = Math.min(screenw / targetw, screenh / targeth);
+
+    container.style.zoom = targetScale;
+  }
+
+  events.on(window, "resize", this.rescale, this);
+
   slides.forEach(((slide) => this.initModules(slide)).bind(this));
 
   events.on(container, events.vendorPrefix("TransitionEnd"), this.transitionEnd, this);
@@ -163,6 +177,8 @@ function Deck(container, deckModules) {
   this.bind(["pagedown", "space", "right"], this.nextItem);
 
   setTimeout(() => {
+    this.rescale();
+
     let match = /^#(\d+)$/.exec(window.location.hash);
     if (match) {
       this.activateItem(parseInt(match[1], 10));
