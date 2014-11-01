@@ -1,6 +1,6 @@
 /*global setTimeout, Audio */
 
-require("codemirror/lib/codemirror.js");
+let CodeMirror = require("codemirror/lib/codemirror.js");
 require("codemirror/lib/codemirror.css");
 
 require("codemirror/addon/edit/matchbrackets.js");
@@ -15,10 +15,10 @@ require("codemirror/addon/tern/tern.css");
 
 require("codemirror/mode/javascript/javascript.js");
 require("codemirror/mode/clojure/clojure.js");
+require("codemirror/mode/haskell/haskell.js");
 
 require("./editor/theme.css");
 
-let CodeMirror = window.CodeMirror; // :(
 window.tern = require("tern"); // ;(((
 
 var events = require("../lib/events");
@@ -38,7 +38,7 @@ function factory(languages) {
     const href = args.href;
     const languageModule = languageMap[mode];
     if (!languageModule) throw new Error("Language module for " + mode +
-                                   " has not been registered!");
+                                         " has not been registered!");
 
     this.onTabClose = () => {
       if (!this.cm.isClean()) {
@@ -54,66 +54,74 @@ function factory(languages) {
       }
     };
 
-    this.compile = () => {
-      var compiled = this.language.compile(this.cm.getDoc().getValue());
-      this.cm.clearGutter();
-      if (compiled.errors.length) {
-        new Audio(require("./editor/smb_bump.mp3")).play();
-        for (let i = 0; i < compiled.errors.length; i++) {
-          let error = compiled.errors[i];
-          let marker = document.createElement("img");
-          marker.title = error.message;
-          marker.classList.add("cm-error");
-          this.cm.setGutterMarker(error.pos.line, "cm-errors", marker);
+    this.compile = (callback) => {
+      this.language.compile(this.cm.getDoc().getValue(), (err, compiled) => {
+        if (err) {
+          console.error(err);
+          return callback(err);
         }
-        return null;
-      } else {
-        return compiled.code;
-      }
+
+        this.cm.clearGutter("cm-errors");
+        if (compiled.errors.length) {
+          new Audio(require("./editor/smb_bump.mp3")).play();
+          for (let i = 0; i < compiled.errors.length; i++) {
+            let error = compiled.errors[i];
+            let marker = document.createElement("img");
+            marker.title = error.message;
+            marker.classList.add("cm-error");
+            this.cm.setGutterMarker(error.pos.line, "cm-errors", marker);
+          }
+          return callback(true);
+        } else {
+          return callback(null, compiled.code);
+        }
+      });
     };
 
     this.evalInFrame = (cm) => {
-      const code = this.compile();
-      if (!code) return;
+      this.send({hide: true});
+      this.compile((err, code) => {
+        if (err) return err;
 
-      if (href) {
-        if ((args.reload !== undefined)) {
-          this.targetFrame.src = href;
-          setTimeout((() => {
-            events.until(this.targetFrame.contentWindow, "message", function(e) {
-              if (e.data === "rdy lol") {
-                this.send({code: code});
-                return true;
-              }
-            }, this);
-          }).bind(this), 100);
-        } else {
-          this.send({code: code});
-        }
-      } else {
-        this.language.evalCode(code, (response) => {
-          let splitLines = response.result.map((result) => result.line),
-              splitCode = text.splitLines(code, splitLines),
-              newCode = response.result.map((result, i) => {
-                if (result.hasOwnProperty("error")) {
-                  return splitCode[i] +
-                    this.language.comment("!! " + result.error) + "\n";
+        if (href) {
+          if ((args.reload !== undefined)) {
+            this.targetFrame.src = href;
+            setTimeout((() => {
+              events.until(this.targetFrame.contentWindow, "message", function(e) {
+                if (e.data === "rdy lol") {
+                  this.send({code: code});
+                  return true;
                 }
-                if (result.result === null) {
-                  return splitCode[i];
-                } else {
-                  return splitCode[i] +
-                    this.language.comment("=> " + result.result) + "\n";
-                }
-              });
-          while (newCode.length < splitCode.length) {
-            newCode.push(splitCode[newCode.length]);
+              }, this);
+            }).bind(this), 100);
+          } else {
+            this.send({code: code});
           }
-          let cursor = this.cm.getDoc().getCursor();
-          this.cm.getDoc().setValue(newCode.join(""));
-          this.cm.getDoc().setCursor(cursor);
-        });
-      }
+        } else {
+          this.language.evalCode(code, (response) => {
+            let splitLines = response.result.map((result) => result.line),
+                splitCode = text.splitLines(code, splitLines),
+                newCode = response.result.map((result, i) => {
+                  if (result.hasOwnProperty("error")) {
+                    return splitCode[i] +
+                      this.language.comment("!! " + result.error) + "\n";
+                  }
+                  if (result.result === null) {
+                    return splitCode[i];
+                  } else {
+                    return splitCode[i] +
+                      this.language.comment("=> " + result.result) + "\n";
+                  }
+                });
+            while (newCode.length < splitCode.length) {
+              newCode.push(splitCode[newCode.length]);
+            }
+            let cursor = this.cm.getDoc().getCursor();
+            this.cm.getDoc().setValue(newCode.join(""));
+            this.cm.getDoc().setCursor(cursor);
+          });
+        }
+      });
     };
 
     this.evalFormAtPoint = (cm) => {
@@ -195,7 +203,7 @@ function factory(languages) {
       matchBrackets: true,
       autoCloseBrackets: true,
       styleActiveLine: true,
-      theme: "moondoge"
+      theme: "haskellwiki"
     };
 
     // --- activate
@@ -209,6 +217,7 @@ function factory(languages) {
       target.appendChild(this.editorFrame);
 
       if (href) {
+        slide.classList.add("withTargetFrame");
         this.targetContainer = document.createElement("div");
         this.targetContainer.classList.add("targetFrame");
 
