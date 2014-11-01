@@ -51,30 +51,30 @@ h4, h5, h6 {
     padding-top: 0.3em;
 }
 
-ul, ol {
-    li {
-        list-style: none;
-        position: relative;
+// ul, ol {
+//     li {
+//         list-style: none;
+//         position: relative;
 
-        &:before {
-            color: #888;
-            text-align: right;
-            position: absolute;
-            left: 0;
-        }
-    }
-}
+//         &:before {
+//             color: #888;
+//             text-align: right;
+//             position: absolute;
+//             left: 0;
+//         }
+//     }
+// }
 
-ul {
-    li:before {
-        content: ' ';
-        width: 1em;
-        height: 1em;
-        margin-left: -1em;
-        background: url(doge.svg);
-        background-size: contain;
-    }
-}
+// ul {
+//     li:before {
+//         content: ' ';
+//         width: 1em;
+//         height: 1em;
+//         margin-left: -1em;
+//         background: url(doge.svg);
+//         background-size: contain;
+//     }
+// }
 
 strong {
     letter-spacing: 0.05em;
@@ -285,7 +285,7 @@ em {
     &.white {
         text-align: center;
 
-        h1, h2, h3, h4, h5, h6, p, a {
+        h1, h2, h3, h4, h5, h6, p, a, li {
             color: white;
             text-shadow: 0 -0.05em 0.1em black, 0 0.05em 0.1em black, 0 0.1em 0.3em black;
             background: none;
@@ -336,7 +336,7 @@ em {
     width: 1em;
 }
 
-.cm-error {
+.CodeMirror-gutter-wrapper .cm-error {
     width: 1em;
     height: 1em;
     background: url(red-doge.svg);
