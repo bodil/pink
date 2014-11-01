@@ -2,7 +2,7 @@
 
 var text = require("../../../lib/text");
 
-module.exports = (languages) => {
+module.exports = (CodeMirror, languages) => {
 
   function Clojure() {
 

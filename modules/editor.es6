@@ -29,7 +29,7 @@ var seq = require("../lib/seq");
 
 function factory(languages) {
 
-  var languageMap = languages.reduce((acc, next) => next(acc), {});
+  var languageMap = languages.reduce((acc, next) => next(CodeMirror, acc), {});
 
   function Editor(slide, mode) {
     const args = slide.dataset;

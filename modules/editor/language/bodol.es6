@@ -2,9 +2,9 @@
 
 var text = require("../../../lib/text");
 
-require("./codemirror-bodol");
+module.exports = (CodeMirror, languages) => {
 
-module.exports = (languages) => {
+  require("./codemirror-bodol")(CodeMirror);
 
   function BODOL() {
 

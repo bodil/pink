@@ -17,7 +17,7 @@ const traceurOptions = {
 };
 
 
-module.exports = (languages) => {
+module.exports = (CodeMirror, languages) => {
 
   function compile(code) {
     traceur.options.reset();

@@ -175,7 +175,7 @@ function Deck(container, deckModules) {
   };
 
   this.bind(["pageup", "left"], this.previousItem);
-  this.bind(["pagedown", "space", "right"], this.nextItem);
+  this.bind(["pagedown", "right"], this.nextItem);
 
   // hammer(container).on("dragright", this.previousItem.bind(this));
   // hammer(container).on("dragleft", this.nextItem.bind(this));
