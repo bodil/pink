@@ -177,9 +177,9 @@ function Deck(container, deckModules) {
   this.bind(["pageup", "left"], this.previousItem);
   this.bind(["pagedown", "space", "right"], this.nextItem);
 
-  hammer(container).on("dragright", this.previousItem.bind(this));
-  hammer(container).on("dragleft", this.nextItem.bind(this));
-  hammer(container).on("tap", this.nextItem.bind(this));
+  // hammer(container).on("dragright", this.previousItem.bind(this));
+  // hammer(container).on("dragleft", this.nextItem.bind(this));
+  // hammer(container).on("tap", this.nextItem.bind(this));
 
   setTimeout(() => {
     this.rescale();
