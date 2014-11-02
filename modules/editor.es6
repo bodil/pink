@@ -71,6 +71,8 @@ function factory(languages) {
             marker.classList.add("cm-error");
             this.cm.setGutterMarker(error.pos.line, "cm-errors", marker);
           }
+          this.cm.getDoc().setCursor(compiled.errors[0].pos.line,
+                                     compiled.errors[0].pos.col);
           return callback(true);
         } else {
           return callback(null, compiled.code);
