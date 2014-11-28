@@ -78,6 +78,8 @@ var webpackConfig = {
       { test: /\.svg$/, loader: "url?limit=10000&mimetype=image/svg" },
       { test: /\.otf$/, loader: "url?limit=10000&mimetype=application/x-font-otf" },
       { test: /\.ttf$/, loader: "url?limit=10000&mimetype=application/x-font-ttf" },
+      { test: /\.woff$/, loader: "url?limit=10000&mimetype=application/x-font-woff" },
+      { test: /\.eot$/, loader: "url?limit=10000&mimetype=application/x-font-eot" },
       { test: /\.mp3$/, loader: "url?limit=10000&mimetype=audio/mpeg" },
       { test: /\.html$/, loader: "url?limit=10000&mimetype=text/html" },
       { test: /\.es6$/, loader: require("path").join(__dirname, "..", "es6-loader.js") }

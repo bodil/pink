@@ -1,6 +1,7 @@
 @import "./reset.less";
 @import "./fonts/Helvetica/helvetica.css";
 @import "./fonts/Inconsolata/inconsolata.css";
+@import "./fonts/LeagueGothic/leaguegothic.css";
 
 *, *:before, *:after {
     /* OMG YES YOU CAN UNBREAK THE BOX MODEL <3 <3 <3 <3 <3 <3 */
@@ -301,6 +302,30 @@ em {
         box-pack: end;
         box-align: end;
         padding-bottom: 0.5em;
+    }
+
+    &.meme {
+        font-family: "League Gothic";
+        font-size: 1.7em;
+        line-height: 1em;
+        color: white;
+        // text-transform: uppercase;
+        padding: 0;
+        p {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            margin: 0;
+            text-shadow: 0.04em 0.04em 0.02em black, 0 0.04em 0.02em black, -0.04em 0.04em 0.02em black, 0.04em 0 0.02em black, -0.04em 0 0.02em black, 0.04em -0.04em 0.02em black, 0 -0.04em 0.02em black, -0.04em -0.04em 0.02em black;
+
+            &.top {
+                top: 0.25em;
+            }
+
+            &.bottom {
+                bottom: 0.25em;
+            }
+        }
     }
 
     &.erlang-the-movie {
