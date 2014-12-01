@@ -1,7 +1,7 @@
 @import "./reset.less";
-@import "./fonts/Helvetica/helvetica.css";
-@import "./fonts/Inconsolata/inconsolata.css";
-@import "./fonts/LeagueGothic/leaguegothic.css";
+@import "./fonts/HelveticaNeue/font.css";
+@import "./fonts/Inconsolata/font.css";
+@import "./fonts/LeagueGothic/font.css";
 
 *, *:before, *:after {
     /* OMG YES YOU CAN UNBREAK THE BOX MODEL <3 <3 <3 <3 <3 <3 */
@@ -275,6 +275,10 @@ em {
             box-shadow: 0 0.1em 0.2em rgba(0, 0, 0, 0.6);
             border-radius: 0.1em;
         }
+    }
+
+    &.nobg {
+        background-color: rgba(0,0,0,0);
     }
 
     &.photo {
