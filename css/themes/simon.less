@@ -1,0 +1,203 @@
+@import "../fonts/ComicNeue/font.css";
+@import "../fonts/Inconsolata/font.css";
+@import "../fonts/LeagueGothic/font.css";
+
+@bg: blue;
+@text: yellow;
+@headerText: @text;
+@linkText: @text;
+@bullet: @text;
+@titleText: white;
+@titleText2: #ffa;
+@titleText3: #faf;
+
+@standardFont: 'Comic Neue';
+@headerFont: 'Comic Sans MS', 'Comic Neue';
+@codeFont: 'Inconsolata';
+@titleFont: 'League Gothic';
+
+body {
+    font-family: @standardFont;
+    font-size: 40pt;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: @text;
+    background: @bg;
+}
+
+#slides {
+
+    section {
+        text-align: center;
+        background: fadeout(@bg, 15%);
+        width: 90%;
+        height: 90%;
+        left: 5%;
+        top: 5%;
+        padding: 0.5em 1em;
+
+        &.title {
+            font-size: 50pt;
+            h1, h2, h3, h4, h5, h6, p {
+                color: @titleText;
+                font-family: @titleFont;
+                text-shadow:
+                0 1pt 0 darken(@titleText, 20%),
+                0 3pt 4pt black;
+                font-weight: normal;
+                margin: 0;
+            }
+            h1 {
+                margin: 0 0 0.3em 0;
+                text-shadow:
+                0 1pt 0 darken(@titleText, 20%),
+                0 2pt 0 darken(@titleText, 23%),
+                0 3pt 4pt black;
+            }
+            h2 {
+                color: @titleText2;
+                text-shadow:
+                0 1pt 0 darken(@titleText2, 20%),
+                0 2pt 0 darken(@titleText2, 23%),
+                0 3pt 4pt black;
+            }
+            span.small {
+                font-size: 0.6em;
+                color: @titleText3;
+                text-shadow:
+                0 1pt 0 darken(@titleText3, 20%),
+                0 3pt 4pt black;
+            }
+        }
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        background: none;
+        margin: 0 0 0.35em 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        vertical-align: baseline;
+        color: @headerText;
+        line-height: 1.05em;
+        letter-spacing: 0.02em;
+        font-family: @headerFont;
+        text-shadow: 0px 3px 6px rgba(0,0,0,0.6);
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        hyphens: auto;
+
+        word-wrap: break-word;
+        line-height: 1;
+    }
+
+    h1 {
+        font-size: 3em;
+        text-shadow: 0 1px 0 darken(@headerText, 5%),
+        0 2px 0 darken(@headerText, 6%),
+        0 3px 0 darken(@headerText, 7%),
+        0 4px 0 darken(@headerText, 8%),
+        0 5px 0 darken(@headerText, 9%),
+        0 6px 1px rgba(0,0,0,.3),
+        0 0 5px rgba(0,0,0,.3),
+        0 1px 3px rgba(0,0,0,.6),
+        0 3px 5px rgba(0,0,0,.4),
+        0 5px 10px rgba(0,0,0,.75),
+        0 20px 20px rgba(0,0,0,.45);
+    }
+
+    h2 {
+        font-size: 2.11em;
+        text-shadow: 0 1px 0 darken(@headerText, 5%),
+        0 2px 0 darken(@headerText, 6%),
+        0 3px 0 darken(@headerText, 7%),
+        0 4px 0 darken(@headerText, 8%),
+        0 6px 1px rgba(0,0,0,.3),
+        0 0 5px rgba(0,0,0,.3),
+        0 1px 3px rgba(0,0,0,.6),
+        0 3px 5px rgba(0,0,0,.4),
+        0 4px 8px rgba(0,0,0,.75),
+        0 10px 10px rgba(0,0,0,.45);
+    }
+
+    h3 {
+        font-size: 1.55em;
+        text-shadow: 0 1px 0 darken(@headerText, 5%),
+        0 2px 0 darken(@headerText, 6%),
+        0 6px 1px rgba(0,0,0,.3),
+        0 0 5px rgba(0,0,0,.3),
+        0 1px 3px rgba(0,0,0,.6),
+        0 3px 5px rgba(0,0,0,.4),
+        0 5px 10px rgba(0,0,0,.75);
+    }
+
+    h4, h5, h6 {
+        font-size: 1em;
+        text-shadow: 0 1px 0 darken(@headerText, 5%),
+        0 6px 1px rgba(0,0,0,.3),
+        0 0 5px rgba(0,0,0,.3),
+        0 1px 3px rgba(0,0,0,.6),
+        0 3px 5px rgba(0,0,0,.4);
+    }
+
+    // Typography
+
+    p, li, li:before, blockquote {
+        text-shadow: 0 2px 5px black;
+        line-height: 56pt;
+    }
+
+    strong {
+        letter-spacing: 0.05em;
+    }
+
+    // Links
+
+    a:not(.image) {
+        color: @linkText;
+        text-decoration: underline;
+        text-shadow: 1px 1px 4px fade(@linkText, 50%);
+
+        -webkit-transition: all .15s ease;
+        -moz-transition: all .15s ease;
+        -ms-transition: all .15s ease;
+        -o-transition: all .15s ease;
+        transition: all .15s ease;
+
+        &:hover {
+            color: lighten(@linkText, 20%);
+            text-shadow: 1px 1px 4px fade(lighten(@linkText, 20%), 75%);
+        }
+    }
+
+    // Lists
+
+    ol {
+        counter-reset: li;
+
+        li:before {
+            content: counters(li, " ", arabic-indic);
+            counter-increment: li;
+        }
+    }
+
+    ul {
+        li:before {
+            content: '• ';
+        }
+    }
+
+    ul, ol {
+        margin: 0.3em 0;
+
+        li {
+            list-style: none;
+
+            &:before {
+                color: @bullet;
+                width: 2em;
+            }
+        }
+    }
+
+}
