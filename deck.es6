@@ -194,7 +194,7 @@ function Deck(container, deckModules) {
         if (a > -Math.PI/4 && a < Math.PI/4) {
           // right swipe
           this.previousItem();
-        } else if (a > (Math.PI*3)/4 || a < -(Mth.PI*3)/4) {
+        } else if (a > (Math.PI*3)/4 || a < -(Math.PI*3)/4) {
           // left swipe
           this.nextItem();
         }
