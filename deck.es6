@@ -170,16 +170,48 @@ function Deck(container, deckModules) {
 
   events.on(container, events.vendorPrefix("TransitionEnd"), this.transitionEnd, this);
 
+  this.onTouchStart = (e) => {
+    this.touching = e.touches.length ? {
+      sx: e.touches[0].screenX, sy: e.touches[0].screenY
+    } : null;
+  }
+
+  this.onTouchMove = (e) => {
+    this.touching = e.touches.length ? {
+      sx: this.touching.sx, sy: this.touching.sy,
+      ex: e.touches[0].screenX, ey: e.touches[0].screenY
+    } : null;
+  }
+
+  this.onTouchEnd = (e) => {
+    if (this.touching) {
+      const x = this.touching.ex - this.touching.sx,
+            y = this.touching.ey - this.touching.sy,
+            r = Math.sqrt(x*x + y*y),
+            a = Math.atan2(y, x);
+      this.touching = null;
+      if (r > 20) {
+        if (a > -Math.PI/4 && a < Math.PI/4) {
+          // right swipe
+          this.previousItem();
+        } else if (a > (Math.PI*3)/4 || a < -(Mth.PI*3)/4) {
+          // left swipe
+          this.nextItem();
+        }
+      }
+    }
+  }
+
+  events.on(window, "touchstart", this.onTouchStart, this);
+  events.on(window, "touchmove", this.onTouchMove, this);
+  events.on(window, "touchend", this.onTouchEnd, this);
+
   this.bind = (binding, callback) => {
     mousetrap.bind(binding, callback.bind(this));
   };
 
   this.bind(["pageup", "left"], this.previousItem);
   this.bind(["pagedown", "right"], this.nextItem);
-
-  // hammer(container).on("dragright", this.previousItem.bind(this));
-  // hammer(container).on("dragleft", this.nextItem.bind(this));
-  // hammer(container).on("tap", this.nextItem.bind(this));
 
   setTimeout(() => {
     this.rescale();
