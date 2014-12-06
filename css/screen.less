@@ -291,6 +291,7 @@ em {
         background-size: contain;
         background-color: rgba(0,0,0,0);
         background-repeat: no-repeat;
+        background-position: 50% 50%;
     }
 
     &.white {
@@ -314,10 +315,20 @@ em {
         padding-bottom: 0.5em;
     }
 
+    &.align-left {
+        padding-left: 1em;
+        padding-right: 1em;
+        text-align: left;
+        h1, h2, h3, h4, h5, h6 {
+            text-align: left;
+        }
+    }
+
     &.meme {
         font-family: "League Gothic";
+        font-weight: 400;
         font-size: 1.7em;
-        line-height: 1em;
+        line-height: 1.2em;
         color: white;
         // text-transform: uppercase;
         padding: 0;
@@ -325,6 +336,7 @@ em {
             position: absolute;
             text-align: center;
             width: 100%;
+            line-height: 1em;
             margin: 0;
             text-shadow: 0.04em 0.04em 0.02em black, 0 0.04em 0.02em black, -0.04em 0.04em 0.02em black, 0.04em 0 0.02em black, -0.04em 0 0.02em black, 0.04em -0.04em 0.02em black, 0 -0.04em 0.02em black, -0.04em -0.04em 0.02em black;
 
@@ -334,6 +346,14 @@ em {
 
             &.bottom {
                 bottom: 0.25em;
+            }
+
+            &.small {
+                font-size: 0.8em;
+            }
+
+            &.smaller {
+                font-size: 0.7em;
             }
         }
     }
