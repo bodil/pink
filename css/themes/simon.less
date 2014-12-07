@@ -22,10 +22,9 @@ body {
     font-weight: 700;
     letter-spacing: -0.02em;
     color: @text;
-    background: @bg;
 }
 
-#slides {
+.slides {
 
     section {
         text-align: center;
@@ -37,7 +36,6 @@ body {
         padding: 0.5em 1em;
 
         &.title {
-            font-size: 50pt;
             h1, h2, h3, h4, h5, h6, p {
                 color: @titleText;
                 font-family: @titleFont;
@@ -143,8 +141,9 @@ body {
     // Typography
 
     p, li, li:before, blockquote {
+        font-size: 1em;
+        line-height: 1.2em;
         text-shadow: 0 2px 5px black;
-        line-height: 56pt;
     }
 
     strong {
@@ -192,7 +191,7 @@ body {
 
         li {
             list-style: none;
-            line-height: 1em;
+            margin-bottom: 0.2em;
 
             &:before {
                 color: @bullet;

@@ -23,11 +23,14 @@ function Background(slide, url) {
   // --- cleanup
 
   this.cleanup = () => {
-    events.once(this.background, events.vendorPrefix("TransitionEnd"), () => {
-      this.background.parentNode.removeChild(this.background);
+    if (this.background) {
+      const bg = this.background;
+      events.once(bg, events.vendorPrefix("TransitionEnd"), () => {
+        bg.parentNode.removeChild(bg);
+      }, this);
+      bg.classList.remove("active");
       this.background = null;
-    }, this);
-    this.background.classList.remove("active");
+    }
   }
 
 }

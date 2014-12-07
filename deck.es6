@@ -10,12 +10,28 @@ var mousetrap = require("./lib/mousetrap");
 var hammer = require("hammerjs");
 var events = require("./lib/events");
 var seq = require("./lib/seq");
+var EventEmitter = require("events").EventEmitter;
+var util = require("util");
 
-function Deck(container, deckModules) {
+function applyDataAttrs(el, data) {
+  for (let key in data) {
+    if (data.hasOwnProperty(key)) {
+      el.setAttribute("data-" + key, data[key]);
+    }
+  }
+}
+
+function BasicDeck(container, deckModules) {
+  EventEmitter.call(this);
 
   if (typeof container === "string") {
     container = document.querySelector(container);
   }
+  container.classList.add("slides");
+
+  this.container = container;
+  this.slideData = container.innerHTML;
+  this.dataset = seq.merge(container.dataset);
 
   const slides = seq.toArray(container.querySelectorAll("section"));
   this.currentSlide = null;
@@ -82,6 +98,10 @@ function Deck(container, deckModules) {
   }
 
   this.activateItem = (item) => {
+    if (item >= stream.length) {
+      throw new ReferenceError("deck has " + stream.length + " items but " +
+                               item + " requested");
+    }
     let itemSlide = fragmentSlide(stream[item]);
     if (this.currentItem !== null) {
       if (this.currentItem < item) {
@@ -99,8 +119,9 @@ function Deck(container, deckModules) {
     this.currentItem = item;
     if (this.currentSlide !== itemSlide) {
       this.activateSlide(itemSlide);
+      this.emit("slide", this.currentSlide);
     }
-    window.location.hash = "" + this.currentItem;
+    this.emit("item", this.currentItem);
   };
 
   this.nextItem = () => {
@@ -161,7 +182,7 @@ function Deck(container, deckModules) {
 
     const targetScale = Math.min(screenw / targetw, screenh / targeth);
 
-    container.style.zoom = targetScale;
+    this.container.style.zoom = targetScale;
   }
 
   events.on(window, "resize", this.rescale, this);
@@ -169,6 +190,17 @@ function Deck(container, deckModules) {
   slides.forEach(((slide) => this.initModules(slide)).bind(this));
 
   events.on(container, events.vendorPrefix("TransitionEnd"), this.transitionEnd, this);
+
+  this.cleanup = () => {
+    slides.forEach(((slide) => this.cleanupModules(slide)).bind(this));
+    events.off(window, "resize", this.rescale);
+    events.off(container, events.vendorPrefix("TransitionEnd"), this.transitionEnd);
+  }
+}
+util.inherits(BasicDeck, EventEmitter);
+
+function Deck(container, deckModules) {
+  BasicDeck.apply(this, arguments);
 
   this.onTouchStart = (e) => {
     this.touching = e.touches.length ? {
@@ -206,12 +238,81 @@ function Deck(container, deckModules) {
   events.on(window, "touchmove", this.onTouchMove, this);
   events.on(window, "touchend", this.onTouchEnd, this);
 
+  this.toggleCheatMode = () => {
+    if (document.body.classList.contains("cheatmode")) {
+      this.cleanupCheatMode();
+    } else {
+      this.initCheatMode();
+    }
+  }
+
+  this.initCheatMode = () => {
+    document.body.classList.add("cheatmode");
+    this.container.classList.add("primary");
+
+    this.secondaryElement = document.createElement("div");
+    this.secondaryElement.classList.add("slides");
+    this.secondaryElement.classList.add("secondary");
+    applyDataAttrs(this.secondaryElement, this.dataset);
+    this.secondaryElement.innerHTML = this.slideData + endSlide;
+    this.container.parentNode.appendChild(this.secondaryElement);
+    this.secondary = new BasicDeck(this.secondaryElement, deckModules);
+    this.secondary.rescale();
+
+    this.external = window.open(window.location.href, "pink-secondary-screen", "dialog=1");
+
+    this.syncAux();
+  }
+
+  this.cleanupCheatMode = () => {
+    if (this.external) {
+      this.external.close();
+      this.external = null;
+    }
+    if (this.secondary) {
+      this.secondary.cleanup();
+      this.secondary = null;
+    }
+    if (this.secondaryElement) {
+      this.secondaryElement.parentNode.removeChild(this.secondaryElement);
+      this.secondaryElement = null;
+    }
+    this.container.classList.remove("primary");
+    document.body.classList.remove("cheatmode");
+  }
+
+  this.syncAux = () => {
+    if (this.secondary) {
+      this.secondary.activateItem(this.currentItem + 1);
+    }
+    if (this.external) {
+      this.external.postMessage({ item: this.currentItem }, window.location.origin);
+    }
+  }
+
+  this.onMessage = (e) => {
+    console.log(e);
+    if (e.origin == window.location.origin) {
+      if (e.data.item !== undefined) {
+        this.activateItem(e.data.item);
+      }
+    }
+  }
+
   this.bind = (binding, callback) => {
     mousetrap.bind(binding, callback.bind(this));
   };
 
   this.bind(["pageup", "left"], this.previousItem);
   this.bind(["pagedown", "right"], this.nextItem);
+  this.bind(["f9"], this.toggleCheatMode);
+
+  this.on("item", (i) => {
+    window.location.hash = "" + i;
+    this.syncAux();
+  });
+
+  events.on(window, "message", this.onMessage);
 
   setTimeout(() => {
     this.rescale();
@@ -223,7 +324,9 @@ function Deck(container, deckModules) {
       this.nextItem();
     }
   }, 1);
-
 }
+util.inherits(Deck, BasicDeck);
+
+const endSlide = '<section style="color: white; background: black; text-align: center"><p style="font-size: 64pt; text-decoration: none; font-weight: bold; font-family: sans-serif">LAST SLIDE</p></section>';
 
 module.exports = Deck;
