@@ -37,6 +37,16 @@ $ pink run
 Using the template project, this should get you a single slide
 containing the words "OMG SLIDES."
 
+## Navigating the Slide Deck
+
+The following keybindings allow you to navigate the slides:
+
+* `PageUp`/`Left` - navigate backwards
+* `PageDown`/`Right` - navigate forwards
+* `F9` - toggle dual screen mode
+
+If you're on a device with a touchscreen, you can also navigate backwards and forwards by swiping horizontally.
+
 ## How To Slide
 
 Looking at the `index.html` file, you'll notice that there's not much in it apart from the HTML header, a script tag which loads Pink, and a `<div id="slides">` containing a single `<section>`. Every `<section>` represents one single slide. Sections can't be nested—Pink slide decks have only one dimension.
