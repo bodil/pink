@@ -1,5 +1,5 @@
 @import "../fonts/ComicNeue/font.css";
-@import "../fonts/Inconsolata/font.css";
+@import "../fonts/Fantasque/font.css";
 @import "../fonts/LeagueGothic/font.css";
 
 @bg: blue;
@@ -13,7 +13,7 @@
 
 @standardFont: 'Comic Neue';
 @headerFont: 'Comic Sans MS', 'Comic Neue';
-@codeFont: 'Inconsolata';
+@codeFont: 'Fantasque Sans Mono';
 @titleFont: 'League Gothic';
 
 body {
@@ -201,9 +201,12 @@ body {
     }
 
     blockquote pre {
+        font-family: @codeFont;
         margin: 0.5em 0;
-        background-color: white;
-        color: black;
         padding: 0.5em 1em;
+        text-align: left;
+        font-size: 24pt;
+        line-height: 32pt;
+        text-shadow: none;
     }
 }
