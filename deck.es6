@@ -71,7 +71,7 @@ function BasicDeck(container, deckModules) {
       slide.classList.remove("current");
     }
     this.currentSlide = null;
-  }
+  };
 
   this.activateSlide = (slide) => {
     if (slide.classList.contains("out")) {
@@ -85,7 +85,7 @@ function BasicDeck(container, deckModules) {
 
     slide.classList.add("current");
     slide.classList.add("in");
-  }
+  };
 
   function applyFragment(from, to, f) {
     var node;
@@ -128,13 +128,13 @@ function BasicDeck(container, deckModules) {
     let nextItem = this.currentItem !== null ? this.currentItem + 1 : 0;
     if (nextItem >= stream.length) nextItem = stream.length - 1;
     if (nextItem !== this.currentItem) this.activateItem(nextItem);
-  }
+  };
 
   this.previousItem = () => {
     let prevItem = this.currentItem !== null ? this.currentItem - 1 : 0;
     if (prevItem < 0) prevItem = 0;
     if (prevItem !== this.currentItem) this.activateItem(prevItem);
-  }
+  };
 
   this.initModules = (slide) => {
     let slideData = slide.dataset,
@@ -148,19 +148,19 @@ function BasicDeck(container, deckModules) {
       }
     }
     slide._deck_modules = mods;
-  }
+  };
 
   this.activateModules = (slide) => {
     slide._deck_modules.forEach((mod) => mod.activate && mod.activate());
-  }
+  };
 
   this.stabiliseModules = (slide) => {
     slide._deck_modules.forEach((mod) => mod.stabilise && mod.stabilise());
-  }
+  };
 
   this.cleanupModules = (slide) => {
     slide._deck_modules.forEach((mod) => mod.cleanup && mod.cleanup());
-  }
+  };
 
   this.transitionEnd = (e) => {
     let slide = e.target;
@@ -171,7 +171,7 @@ function BasicDeck(container, deckModules) {
       slide.classList.remove("in");
       this.stabiliseModules(slide);
     }
-  }
+  };
 
   this.rescale = () => {
     const screenw = window.innerWidth,
@@ -183,7 +183,7 @@ function BasicDeck(container, deckModules) {
     const targetScale = Math.min(screenw / targetw, screenh / targeth);
 
     this.container.style.zoom = targetScale;
-  }
+  };
 
   events.on(window, "resize", this.rescale, this);
 
@@ -195,7 +195,7 @@ function BasicDeck(container, deckModules) {
     slides.forEach(((slide) => this.cleanupModules(slide)).bind(this));
     events.off(window, "resize", this.rescale);
     events.off(container, events.vendorPrefix("TransitionEnd"), this.transitionEnd);
-  }
+  };
 }
 util.inherits(BasicDeck, EventEmitter);
 
@@ -206,14 +206,14 @@ function Deck(container, deckModules) {
     this.touching = e.touches.length ? {
       sx: e.touches[0].screenX, sy: e.touches[0].screenY
     } : null;
-  }
+  };
 
   this.onTouchMove = (e) => {
     this.touching = e.touches.length ? {
       sx: this.touching.sx, sy: this.touching.sy,
       ex: e.touches[0].screenX, ey: e.touches[0].screenY
     } : null;
-  }
+  };
 
   this.onTouchEnd = (e) => {
     if (this.touching) {
@@ -232,7 +232,7 @@ function Deck(container, deckModules) {
         }
       }
     }
-  }
+  };
 
   events.on(window, "touchstart", this.onTouchStart, this);
   events.on(window, "touchmove", this.onTouchMove, this);
@@ -244,7 +244,7 @@ function Deck(container, deckModules) {
     } else {
       this.initCheatMode();
     }
-  }
+  };
 
   this.initCheatMode = () => {
     document.body.classList.add("cheatmode");
@@ -262,7 +262,7 @@ function Deck(container, deckModules) {
     this.external = window.open(window.location.href, "pink-secondary-screen", "dialog=1");
 
     this.syncAux();
-  }
+  };
 
   this.cleanupCheatMode = () => {
     if (this.external) {
@@ -279,7 +279,7 @@ function Deck(container, deckModules) {
     }
     this.container.classList.remove("primary");
     document.body.classList.remove("cheatmode");
-  }
+  };
 
   this.syncAux = () => {
     if (this.secondary) {
@@ -288,7 +288,7 @@ function Deck(container, deckModules) {
     if (this.external) {
       this.external.postMessage({ item: this.currentItem }, window.location.origin);
     }
-  }
+  };
 
   this.onMessage = (e) => {
     console.log(e);
@@ -297,7 +297,7 @@ function Deck(container, deckModules) {
         this.activateItem(e.data.item);
       }
     }
-  }
+  };
 
   this.bind = (binding, callback) => {
     mousetrap.bind(binding, callback.bind(this));
