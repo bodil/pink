@@ -10,8 +10,8 @@ require("codemirror/addon/hint/show-hint.css");
 require("codemirror/addon/hint/anyword-hint.js");
 require("codemirror/addon/selection/active-line.js");
 require("codemirror/addon/comment/comment.js");
-require("codemirror/addon/tern/tern.js");
-require("codemirror/addon/tern/tern.css");
+// require("codemirror/addon/tern/tern.js");
+// require("codemirror/addon/tern/tern.css");
 
 require("codemirror/mode/javascript/javascript.js");
 require("codemirror/mode/clojure/clojure.js");
@@ -19,7 +19,7 @@ require("codemirror/mode/haskell/haskell.js");
 
 require("./editor/theme.css");
 
-window.tern = require("tern"); // ;(((
+// window.tern = require("tern"); // ;(((
 
 var events = require("../lib/events");
 var text = require("../lib/text");
@@ -205,7 +205,7 @@ function factory(languages) {
       matchBrackets: true,
       autoCloseBrackets: true,
       styleActiveLine: true,
-      theme: "haskellwiki"
+      theme: "moondoge"
     };
 
     // --- activate
@@ -249,21 +249,25 @@ function factory(languages) {
       this.cm = CodeMirror(this.editorFrame, options);
       this.cm.setSize("100%", "100%");
 
-      if (mode === "text/javascript") {
-        let tern = new CodeMirror.TernServer({
-          defs: [ require("tern/defs/ecma5.json"),
-                  require("tern/defs/browser.json"),
-                  require("./editor/mousetrap.json"),
-                  require("./editor/rxjs.json") ]
-        });
-        let ternKeymap = seq.merge(keymap);
-        ternKeymap["Ctrl-\\"] = (cm) => tern.complete(cm);
-        ternKeymap["Ctrl-I"] = (cm) => tern.showType(cm);
-        ternKeymap["Alt-."] = (cm) => tern.jumpToDef(cm);
-        ternKeymap["Alt-,"] = (cm) => tern.jumpBack(cm);
-        ternKeymap["Ctrl-Q"] = (cm) => tern.rename(cm);
-        this.cm.setOption("extraKeys", ternKeymap);
-        this.cm.on("cursorActivity", (cm) => tern.updateArgHints(cm));
+      // if (mode === "text/javascript") {
+      //   let tern = new CodeMirror.TernServer({
+      //     defs: [ require("tern/defs/ecma5.json"),
+      //             require("tern/defs/browser.json"),
+      //             require("./editor/mousetrap.json"),
+      //             require("./editor/rxjs.json") ]
+      //   });
+      //   let ternKeymap = seq.merge(keymap);
+      //   ternKeymap["Ctrl-\\"] = (cm) => tern.complete(cm);
+      //   ternKeymap["Ctrl-I"] = (cm) => tern.showType(cm);
+      //   ternKeymap["Alt-."] = (cm) => tern.jumpToDef(cm);
+      //   ternKeymap["Alt-,"] = (cm) => tern.jumpBack(cm);
+      //   ternKeymap["Ctrl-Q"] = (cm) => tern.rename(cm);
+      //   this.cm.setOption("extraKeys", ternKeymap);
+      //   this.cm.on("cursorActivity", (cm) => tern.updateArgHints(cm));
+      // }
+
+      if (args.warmup !== undefined) {
+        this.compile(() => {});
       }
     }
 

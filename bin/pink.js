@@ -70,6 +70,13 @@ var webpackConfig = {
     publicPath: "dist/pink/"
   },
   module: {
+    preLoaders: [
+      { test: /\.(js|es6)$/, loader: "babel-loader",
+        exclude: [
+          /.*\/node_modules\/.*/
+        ]
+      }
+    ],
     loaders: [
       { test: /\.less$/, loader: "style!css!less" },
       { test: /\.css$/, loader: "style!css" },
@@ -81,8 +88,7 @@ var webpackConfig = {
       { test: /\.woff$/, loader: "url?limit=10000&mimetype=application/x-font-woff" },
       { test: /\.eot$/, loader: "url?limit=10000&mimetype=application/x-font-eot" },
       { test: /\.mp3$/, loader: "url?limit=10000&mimetype=audio/mpeg" },
-      { test: /\.html$/, loader: "url?limit=10000&mimetype=text/html" },
-      { test: /\.es6$/, loader: require("path").join(__dirname, "..", "es6-loader.js") }
+      { test: /\.html$/, loader: "url?limit=10000&mimetype=text/html" }
     ]
   },
   devtool: "source-map",
