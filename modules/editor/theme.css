@@ -1,3 +1,8 @@
+div.editorFrame {
+    text-align: left;
+    font-size: 48pt;
+}
+
 /* moondoge */
 
 .cm-s-moondoge span.cm-meta {color: #FF1717;}
