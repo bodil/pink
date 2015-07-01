@@ -82,8 +82,11 @@ function factory(languages) {
 
     this.evalInFrame = (cm) => {
       this.send({hide: true});
+      this.spin(true);
       this.compile((err, code) => {
         if (err) return err;
+
+        this.spin(false);
 
         if (href) {
           if ((args.reload !== undefined)) {
@@ -236,8 +239,8 @@ function factory(languages) {
           color: "white",
           shadow: true,
           hwaccel: true,
-          length: factor * 2,
-          radius: factor * 2,
+          length: factor * 1.5,
+          radius: factor * 3.4,
           width: factor,
           trail: 40,
           lines: 12
@@ -280,10 +283,7 @@ function factory(languages) {
         this.targetContainer.appendChild(this.targetFrame);
         events.until(this.targetFrame.contentWindow, "message", function(e) {
           if (e.data === "rdy lol") {
-            this.spinner.stop();
-            this.targetFrame.style.display = "";
-            this.targetContainer.removeChild(this.loaderFrame);
-            this.loaderFrame = this.spinner = null;
+            this.spin(false);
             return true;
           }
         }, this);
@@ -291,6 +291,18 @@ function factory(languages) {
       this.cm.refresh();
       this.cleanupHandler = events.on(window, "beforeunload", this.onTabClose, this);
     }
+
+    this.spin = (enable) => {
+      if (enable) {
+        this.loaderFrame.style.display = "";
+        this.targetFrame.style.display = "none";
+        this.spinner.spin(this.loaderFrame);
+      } else {
+        this.spinner.stop();
+        this.loaderFrame.style.display = "none";
+        this.targetFrame.style.display = "";
+      }
+    };
 
     // --- cleanup
 
