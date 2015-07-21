@@ -56,10 +56,6 @@ function getPresentationFile() {
   return presentationFile;
 }
 
-var OccurenceOrderPlugin = require("webpack/lib/optimize/OccurenceOrderPlugin");
-var DedupePlugin = require("webpack/lib/optimize/DedupePlugin");
-var UglifyPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
-
 var webpackConfig = {
   bail: true,
   cache: true,
@@ -93,7 +89,7 @@ var webpackConfig = {
   },
   devtool: "source-map",
   resolve: {
-    extensions: ["", ".es6", ".js"],
+    extensions: ["", ".es6", ".js", ".json"],
     alias: {
       "pink": path.join(__dirname, "..")
     }
@@ -106,12 +102,7 @@ var webpackConfig = {
     "process": true,
     "__filename": true,
     "__dirname": true
-  },
-  plugins: [
-    new OccurenceOrderPlugin(),
-    new DedupePlugin(),
-    new UglifyPlugin()
-  ]
+  }
 };
 
 function buildPresentation() {
@@ -135,8 +126,7 @@ function buildPresentation() {
 function runServer() {
   var WebpackDevServer = require("webpack-dev-server");
   var compiler = webpack(seq.merge(webpackConfig, {
-    entry: getPresentationFile(),
-    plugins: []
+    entry: getPresentationFile()
   }));
   var server = new WebpackDevServer(compiler, {
     publicPath: "/dist/pink/",

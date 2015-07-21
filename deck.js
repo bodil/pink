@@ -1,8 +1,7 @@
 /*global setTimeout */
 
-// Patch in Traceur runtime
-window.global = window;
-require("traceur/bin/traceur-runtime");
+// Load the Babel polyfill first of all.
+require("babel-core/browser-polyfill");
 
 require("./css/screen.less");
 
@@ -291,7 +290,6 @@ function Deck(container, deckModules) {
   };
 
   this.onMessage = (e) => {
-    console.log(e);
     if (e.origin == window.location.origin) {
       if (e.data.item !== undefined) {
         this.activateItem(e.data.item);

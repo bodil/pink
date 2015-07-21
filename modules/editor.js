@@ -54,13 +54,8 @@ function factory(languages) {
       }
     };
 
-    this.compile = (callback) => {
-      this.language.compile(this.cm.getDoc().getValue(), (err, compiled) => {
-        if (err) {
-          console.error(err);
-          return callback(err);
-        }
-
+    this.compile = () => {
+      return this.language.compile(this.cm.getDoc().getValue()).then((compiled) => {
         this.cm.clearGutter("cm-errors");
         if (compiled.errors.length) {
           new Audio(require("./editor/smb_bump.mp3")).play();
@@ -73,9 +68,9 @@ function factory(languages) {
           }
           this.cm.getDoc().setCursor(compiled.errors[0].pos.line,
                                      compiled.errors[0].pos.col);
-          return callback(true);
+          return null;
         } else {
-          return callback(null, compiled.code);
+          return compiled.code;
         }
       });
     };
@@ -83,10 +78,13 @@ function factory(languages) {
     this.evalInFrame = (cm) => {
       this.send({hide: true});
       this.spin(true);
-      this.compile((err, code) => {
-        if (err) return err;
-
+      this.compile().catch((err) => {
         this.spin(false);
+        console.error(err);
+      }).then((code) => {
+        this.spin(false);
+
+        if (code === null) return;
 
         if (href) {
           if ((args.reload !== undefined)) {
@@ -129,29 +127,6 @@ function factory(languages) {
       });
     };
 
-    this.evalFormAtPoint = (cm) => {
-      var callback = (errors, result) => {
-        if (errors) {
-          new Audio(require("./editor/smb_bump.mp3")).play();
-          let marker = document.createElement("img");
-          marker.title = errors[0].message;
-          marker.classList.add("cm-error");
-          this.cm.setGutterMarker(errors[0].pos.line, "cm-errors", marker);
-        } else {
-          if (href) {
-            this.send({code: result.compiled});
-          } else {
-            this.language.evalCode(result, (error, result) => {
-              console.log(error, result);
-            });
-          }
-        }
-      };
-
-      this.language.formAtPoint(cm.getDoc().getValue(),
-                                cm.indexFromPos(cm.getCursor()), callback);
-    };
-
     this.reloadFrame = (cm) => {
       if (this.targetFrame) {
         this.targetFrame.src = href;
@@ -166,7 +141,6 @@ function factory(languages) {
 
     const keymap = {};
     keymap["Ctrl-S"] = this.evalInFrame.bind(this);
-    keymap["Ctrl-D"] = this.evalFormAtPoint.bind(this);
     keymap["Ctrl-R"] = this.reloadFrame.bind(this);
     keymap["Alt-Space"] = this.iframeBind("space");
     keymap["Alt-Enter"] = this.iframeBind("enter");
