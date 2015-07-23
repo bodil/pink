@@ -60,9 +60,13 @@ var webpackConfig = {
   bail: true,
   cache: true,
   context: process.cwd(),
+  entry: {
+    pink: getPresentationFile(),
+    replclient: path.join(__dirname, "..", "modules", "editor", "client.js")
+  },
   output: {
     path: path.join(process.cwd(), "dist/pink"),
-    filename: "pink.js",
+    filename: "[name].js",
     publicPath: "dist/pink/"
   },
   module: {
@@ -101,14 +105,13 @@ var webpackConfig = {
     "global": true,
     "process": true,
     "__filename": true,
-    "__dirname": true
+    "__dirname": true,
+    "setImmediate": true
   }
 };
 
 function buildPresentation() {
-  var compiler = webpack(seq.merge(webpackConfig, {
-    entry: getPresentationFile()
-  }));
+  var compiler = webpack(webpackConfig);
   compiler.run(function(err, stats) {
     if (err) {
       stderr.red().bold().write("ERROR: ")
@@ -125,9 +128,7 @@ function buildPresentation() {
 
 function runServer() {
   var WebpackDevServer = require("webpack-dev-server");
-  var compiler = webpack(seq.merge(webpackConfig, {
-    entry: getPresentationFile()
-  }));
+  var compiler = webpack(webpackConfig);
   var server = new WebpackDevServer(compiler, {
     publicPath: "/dist/pink/",
     stats: {
