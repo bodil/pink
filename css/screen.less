@@ -3,6 +3,9 @@
 @import "./fonts/Inconsolata/font.css";
 @import "./fonts/LeagueGothic/font.css";
 
+@typoFont: "Helvetica Neue LT Std";
+@codeFont: "Inconsolata";
+
 *, *:before, *:after {
     /* OMG YES YOU CAN UNBREAK THE BOX MODEL <3 <3 <3 <3 <3 <3 */
     -webkit-box-sizing: border-box;
@@ -16,7 +19,7 @@ body {
     margin: 0;
     padding: 0;
     border: 0;
-    font-family: "Helvetica Neue LT Std";
+    font-family: @typoFont;
     font-size: 48pt;
     line-height: 1.2em;
     visibility: visible;
@@ -277,7 +280,7 @@ em {
         }
 
         .CodeMirror {
-            font-family: "Inconsolata";
+            font-family: @codeFont;
             line-height: 1.2em;
             font-size: 0.4em;
 
@@ -397,7 +400,7 @@ em {
 
 .CodeMirror-hints,
 .CodeMirror-Tern-tooltip {
-    font-family: "Inconsolata";
+    font-family: @codeFont;
     line-height: 1.2em;
     font-size: 0.5em !important;
     text-shadow: none;
