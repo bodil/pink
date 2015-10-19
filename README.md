@@ -124,11 +124,11 @@ new Pink("#slides", {
 });
 ```
 
-The `background` module lets you add slide specific backgrounds by adding a `data-backgorund` attribute to the slide's `section` tag. Likewise, the `image` module supports a `data-image` attribute on the `section` tag which sets the background of the slide area, as opposed to the area behind the slide.
+The `background` module lets you add slide specific backgrounds by adding a `data-background` attribute to the slide's `section` tag. Likewise, the `image` module supports a `data-image` attribute on the `section` tag which sets the background of the slide area, as opposed to the area behind the slide.
 
 The `data-background` attribute corresponds directly to the `"background"` key on the object you pass to the constructor. You could change it to something else if you like; the `background` module has no other relationship to it. Pink simply looks at each `section` tag, and if it has a data attribute corresponding to a module as defined in the constructor, it enabled the module for that slide and passes the contents of the data attribute as an argument.
 
-If you want a module to be active on every slide, set the data attribute on the container element (the element you pass as the constructor's first argument). The value of this data attribute can be overridden on each section, so if you set `data-background="doge.png"` on the parent element, `doge.png` will be the background for all slides without a `data-backgorund` attribute, but a `section` tag with `data-background="catte.png"` would instead have `catte.png` as its background.
+If you want a module to be active on every slide, set the data attribute on the container element (the element you pass as the constructor's first argument). The value of this data attribute can be overridden on each section, so if you set `data-background="doge.png"` on the parent element, `doge.png` will be the background for all slides without a `data-background` attribute, but a `section` tag with `data-background="catte.png"` would instead have `catte.png` as its background.
 
 Some modules may observe other data attributes as well, but they do so by their own mechanisms.
 
