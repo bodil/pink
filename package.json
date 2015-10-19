@@ -23,7 +23,7 @@
     "babel-core": "5.8.25",
     "babel-loader": "5.3.2",
     "codemirror": "5.7.0",
-    "css-loader": "0.20.0",
+    "css-loader": "0.20.2",
     "directory-copy": "0.1.0",
     "file-loader": "0.8.4",
     "hammerjs": "2.0.4",
