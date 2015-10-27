@@ -1,4 +1,4 @@
-import transform from "babel-core/lib/babel/transformation";
+import transform from "babel-core/lib/transformation";
 import Promise from "bluebird";
 
 module.exports = (CodeMirror, languages) => {
