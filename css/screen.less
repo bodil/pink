@@ -26,6 +26,24 @@ body {
     font-feature-settings: "kern";
     -moz-font-feature-settings: "kern";
     -webkit-font-feature-settings: "kern";
+
+}
+
+// If you try to combine these into one rule, Chrome doesn't see it.
+// lol, computers.
+:-webkit-full-screen {
+    width: 100%;
+    height: 100%;
+}
+
+:-moz-full-screen {
+    width: 100%;
+    height: 100%;
+}
+
+:fullscreen {
+    width: 100%;
+    height: 100%;
 }
 
 p, a, li, li:before, h1, h2, h3, h4, h5, h6 {

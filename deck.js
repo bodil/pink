@@ -142,7 +142,7 @@ function BasicDeck(container, deckModules) {
     for (mod in deckModules) {
       if (deckModules.hasOwnProperty(mod)) {
         let arg = slideData.hasOwnProperty(mod) ? slideData[mod] :
-              deckData.hasOwnProperty(mod) ? deckData[mod] : null;
+                  deckData.hasOwnProperty(mod) ? deckData[mod] : null;
         if (arg) mods.push(new deckModules[mod](slide, arg));
       }
     }
@@ -297,6 +297,36 @@ function Deck(container, deckModules) {
     }
   };
 
+  this.toggleFullscreen = () => {
+    // const el = document.getElementById("slides");
+    const el = document.body;
+
+    if (!document.fullscreenElement
+     && !document.mozFullScreenElement
+     && !document.webkitFullscreenElement
+     && !document.msFullscreenElement ) {
+       if (el.requestFullscreen) {
+         el.requestFullscreen();
+       } else if (el.msRequestFullscreen) {
+         el.msRequestFullscreen();
+       } else if (el.mozRequestFullScreen) {
+         el.mozRequestFullScreen();
+       } else if (el.webkitRequestFullscreen) {
+         el.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+       }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    }
+  };
+
   this.bind = (binding, callback) => {
     mousetrap.bind(binding, callback.bind(this));
   };
@@ -304,6 +334,7 @@ function Deck(container, deckModules) {
   this.bind(["pageup", "left"], this.previousItem);
   this.bind(["pagedown", "right"], this.nextItem);
   this.bind(["f9"], this.toggleCheatMode);
+  this.bind(["f4"], this.toggleFullscreen);
 
   this.on("item", (i) => {
     window.location.hash = "" + i;
