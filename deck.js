@@ -1,7 +1,7 @@
 /*global setTimeout */
 
 // Load the Babel polyfill first of all.
-require("babel-core/browser-polyfill");
+require("babel-polyfill");
 
 require("./css/screen.less");
 

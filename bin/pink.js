@@ -1,54 +1,64 @@
 #!/usr/bin/env node
 
-var yargs = require("yargs");
+var fs = require("fs");
 var path = require("path");
+var minimist = require("minimist");
+var chalk = require("chalk");
 var webpack = require("webpack");
 var ansi = require("ansi");
 var seq = require("../lib/seq");
 
-var stdout = ansi(process.stdout);
-var stderr = ansi(process.stderr);
+var stdout = process.stdout;
+var stderr = process.stderr;
 
-var usage = "Usage: $0 <command>\n\n" +
-      "Commands:\n\n" +
-      "  init <path>   Install a project template in the given (or current) directory\n" +
-      "  run <file>    Launch a web server running Pink with the given JS module file\n" +
-      "  build <file>  Build deployable assets from the given JS module file";
+var argv = minimist(process.argv.slice(2), {
+  string: ["host"],
+  boolean: ["mono", "help"],
+  alias: {
+    h: "host",
+    p: "port",
+    m: "mono"
+  },
+  default: {
+    host: "localhost",
+    port: 1337
+  }
+});
 
-var argv = yargs.usage(usage)
+var usage = "Usage: pink <command>\n\n" +
+    "Commands:\n\n" +
+    "  init <path>   Install a project template in the given (or current) directory\n" +
+    "  run <file>    Launch a web server running Pink with the given JS module file\n" +
+    "  build <file>  Build deployable assets from the given JS module file\n\n" +
+    "Options:\n\n" +
+    "  -h --host <address>  IP address to bind web server to\n" +
+    "  -p --port <port>     web server TCP port\n" +
+    "  -m --mono            don't use ANSI colours\n\n";
 
-      .default("host", "localhost").alias("host", "h").string("host")
-      .describe("host", "IP address to bind web server to")
-
-      .default("port", 1337).alias("port", "p")
-      .describe("port", "web server TCP port")
-
-      .boolean("mono").alias("mono", "m")
-      .describe("mono", "don't use colours in Webpack messages")
-
-      .boolean("help").alias("help", "h")
-      .describe("help", "display this help message")
-
-      .argv;
+function help(v) {
+  console.error(usage);
+  process.exit(v || 0);
+}
 
 if (argv.help) {
-  yargs.showHelp();
-  process.exit(0);
+  help(0);
+}
+
+if (argv.mono) {
+  chalk.enabled = false;
 }
 
 var command = argv._[0];
 if (!command) {
   stderr.write("Missing command.\n"),
-  yargs.showHelp();
-  process.exit(1);
+  help(1);
 }
 
 function getPresentationFile() {
   var presentationFile = argv._[1];
   if (!presentationFile) {
     stderr.write("Missing presentation file.\n"),
-    yargs.showHelp();
-    process.exit(1);
+    help(1);
   } else {
     presentationFile = path.resolve(process.cwd(), presentationFile);
   }
@@ -56,69 +66,70 @@ function getPresentationFile() {
   return presentationFile;
 }
 
-var webpackConfig = {
-  bail: true,
-  cache: true,
-  context: process.cwd(),
-  entry: {
-    pink: getPresentationFile(),
-    replclient: path.join(__dirname, "..", "modules", "editor", "client.js")
-  },
-  output: {
-    path: path.join(process.cwd(), "dist/pink"),
-    filename: "[name].js",
-    publicPath: "dist/pink/"
-  },
-  module: {
-    preLoaders: [
-      { test: /\.(js|es6)$/, loader: "babel-loader",
-        exclude: [
-          /.*\/node_modules\/.*/
-        ]
+function webpackConfig() {
+  var presentation = getPresentationFile();
+  var presentationPath = path.dirname(presentation);
+  return {
+    bail: true,
+    cache: true,
+    context: presentationPath,
+    entry: {
+      pink: presentation
+    },
+    output: {
+      path: path.join(presentationPath, "dist/pink"),
+      filename: "[name].js",
+      publicPath: "dist/pink/"
+    },
+    module: {
+      preLoaders: [
+        { test: /\.js$/, loader: "babel-loader",
+          exclude: [
+              /.*\/node_modules\/.*/
+          ],
+          query: JSON.parse(fs.readFileSync(path.resolve(__dirname, "..", ".babelrc"), "utf8"))
+        }
+      ],
+      loaders: [
+        { test: /\.less$/, loader: "style!css!less" },
+        { test: /\.css$/, loader: "style!css" },
+        { test: /\.json$/, loader: "json" },
+        { test: /\.png$/, loader: "url?limit=10000&mimetype=image/png" },
+        { test: /\.svg$/, loader: "url?limit=10000&mimetype=image/svg" },
+        { test: /\.otf$/, loader: "url?limit=10000&mimetype=application/x-font-otf" },
+        { test: /\.ttf$/, loader: "url?limit=10000&mimetype=application/x-font-ttf" },
+        { test: /\.woff$/, loader: "url?limit=10000&mimetype=application/x-font-woff" },
+        { test: /\.eot$/, loader: "url?limit=10000&mimetype=application/x-font-eot" },
+        { test: /\.mp3$/, loader: "url?limit=10000&mimetype=audio/mpeg" },
+        { test: /\.html$/, loader: "url?limit=10000&mimetype=text/html" }
+      ]
+    },
+    devtool: "source-map",
+    resolve: {
+      extensions: ["", ".js", ".json"],
+      alias: {
+        "pink": path.join(__dirname, "..")
       }
-    ],
-    loaders: [
-      { test: /\.less$/, loader: "style!css!less" },
-      { test: /\.css$/, loader: "style!css" },
-      { test: /\.json$/, loader: "json" },
-      { test: /\.png$/, loader: "url?limit=10000&mimetype=image/png" },
-      { test: /\.svg$/, loader: "url?limit=10000&mimetype=image/svg" },
-      { test: /\.otf$/, loader: "url?limit=10000&mimetype=application/x-font-otf" },
-      { test: /\.ttf$/, loader: "url?limit=10000&mimetype=application/x-font-ttf" },
-      { test: /\.woff$/, loader: "url?limit=10000&mimetype=application/x-font-woff" },
-      { test: /\.eot$/, loader: "url?limit=10000&mimetype=application/x-font-eot" },
-      { test: /\.mp3$/, loader: "url?limit=10000&mimetype=audio/mpeg" },
-      { test: /\.html$/, loader: "url?limit=10000&mimetype=text/html" }
-    ]
-  },
-  devtool: "source-map",
-  resolve: {
-    extensions: ["", ".es6", ".js", ".json"],
-    alias: {
-      "pink": path.join(__dirname, "..")
+    },
+    resolveLoader: {
+      fallback: [path.join(__dirname, "..", "node_modules")]
+    },
+    node: {
+      "global": true,
+      "process": true,
+      "__filename": true,
+      "__dirname": true,
+      "setImmediate": true
     }
-  },
-  resolveLoader: {
-    fallback: [path.join(__dirname, "..", "node_modules")]
-  },
-  node: {
-    "global": true,
-    "process": true,
-    "__filename": true,
-    "__dirname": true,
-    "setImmediate": true
-  }
+  };
 };
 
 function buildPresentation() {
-  var compiler = webpack(webpackConfig);
+  var compiler = webpack(webpackConfig());
   compiler.run(function(err, stats) {
     if (err) {
-      stderr.red().bold().write("ERROR: ")
-        .reset().write(err.message)
-        .write("\n")
-        .write(err.details)
-        .write("\n");
+      stderr.write(chalk.red.bold("ERROR: "));
+      stderr.write(err.message + "\n" + err.details + "\n");
       process.exit(1);
     } else {
       stdout.write(stats.toString({ colors: !argv.mono }));
@@ -128,8 +139,10 @@ function buildPresentation() {
 
 function runServer() {
   var WebpackDevServer = require("webpack-dev-server");
-  var compiler = webpack(webpackConfig);
+  var config = webpackConfig();
+  var compiler = webpack(config);
   var server = new WebpackDevServer(compiler, {
+    contentBase: config.context,
     publicPath: "/dist/pink/",
     stats: {
       hash: false,
@@ -139,9 +152,9 @@ function runServer() {
     }
   });
   server.listen(argv.port, argv.host, function() {
-    stdout.write("Development server running: ")
-      .yellow().bold().write("http://" + argv.host + ":" + argv.port)
-      .reset().write("\n");
+    stdout.write("Development server running: ");
+    stdout.write(chalk.yellow.bold("http://" + argv.host + ":" + argv.port));
+    stdout.write("\n");
   });
 }
 
@@ -156,10 +169,13 @@ function installTemplate() {
     dest: dest
   }, function(err) {
     if (err) {
-      stderr.red().bold().write("ERROR: ").reset().write(require("util").inspect(err)).write("\n");
+      stderr.write(chalk.red.bold("ERROR: "));
+      stderr.write(require("util").inspect(err));
+      stderr.write("\n");
     } else {
-      stdout.write("Installed project template: ")
-        .green().write(dest).reset().write("\n");
+      stdout.write("Installed project template: ");
+      stdout.write(chalk.green(dest));
+      stdout.write("\n");
     }
   });
 }
