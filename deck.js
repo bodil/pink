@@ -343,6 +343,9 @@ function Deck(container, deckModules) {
 
   events.on(window, "message", this.onMessage);
 
+  window.onbeforeunload = () =>
+    "Here is a confirmation dialog in case you just hit Ctrl-W because of Emacs muscle memory as usual.";
+
   setTimeout(() => {
     this.rescale();
 
