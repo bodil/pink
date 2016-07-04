@@ -19,6 +19,7 @@
   "bin": "./bin/pink.js",
   "main": "./deck.js",
   "dependencies": {
+    "app-module-path": "^1.1.0",
     "babel-core": "^6.10.4",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-async-to-generator": "^6.8.0",

@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 
-var fs = require("fs");
 var path = require("path");
+var modPath = path.resolve(__dirname, "..", "node_modules");
+require("app-module-path").addPath(modPath);
+
+var fs = require("fs");
 var minimist = require("minimist");
 var chalk = require("chalk");
 var webpack = require("webpack");
