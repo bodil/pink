@@ -115,7 +115,7 @@ function webpackConfig() {
       }
     },
     resolveLoader: {
-      fallback: [path.join(__dirname, "..", "node_modules")]
+      fallback: [modPath]
     },
     node: {
       "global": true,
