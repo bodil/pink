@@ -111,7 +111,7 @@ function webpackConfig() {
     resolve: {
       extensions: ["", ".js", ".json"],
       alias: {
-        "pink": path.join(__dirname, "..")
+        "pink": path.resolve(__dirname, "..")
       }
     },
     resolveLoader: {
