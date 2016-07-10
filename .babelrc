@@ -3,6 +3,7 @@
     "es2015"
   ],
   "plugins": [
-    "transform-async-to-generator"
+    "transform-async-to-generator",
+    "transform-class-properties"
   ]
 }
